@@ -1,15 +1,14 @@
 // Asegurarnos que rifaData sea global
 window.rifaData = {
-    "id": 1738428258754,
-    "titulo": "Gran Rifa de perfume",
-    "premio": "Perfume",
+    "id": 1738425308687,
+    "titulo": "Gran Rifa de Zapato",
+    "premio": "Zapato",
     "fecha": "2025-02-28",
-    "precio": "2",
+    "precio": "1",
     "numeros": 50,
     "numerosVendidos": {
       "1": "Mickaell",
-      "2": "Monica",
-      "3": "Michi"
+      "2": "Monica"
     }
   };
 
