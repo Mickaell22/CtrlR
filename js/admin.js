@@ -100,24 +100,40 @@ document.addEventListener('DOMContentLoaded', function() {
         const rifa = rifas.find(r => r.id === rifaId);
         
         if (!rifa) return;
-
+    
+        // Remover modal existente si hay uno
+        const modalExistente = document.getElementById('modalGestion');
+        if (modalExistente) {
+            modalExistente.remove();
+        }
+    
         // Crear modal de gestión
         const modalHTML = `
             <div id="modalGestion" class="modal">
                 <div class="modal-content">
-                    <h2>Gestionar Números - ${rifa.titulo}</h2>
+                    <h2 style="margin-bottom: 20px;">Gestionar Números - ${rifa.titulo}</h2>
                     <div class="numeros-grid">
                         ${generarGrillaNumeros(rifa)}
                     </div>
-                    <div class="buttons">
+                    <div class="buttons" style="text-align: center;">
                         <button onclick="cerrarModalGestion()" class="btn-secondary">Cerrar</button>
                     </div>
                 </div>
             </div>
         `;
-
+    
         document.body.insertAdjacentHTML('beforeend', modalHTML);
-        document.getElementById('modalGestion').style.display = 'block';
+        
+        // Mostrar modal
+        const modalGestion = document.getElementById('modalGestion');
+        modalGestion.style.display = 'block';
+    
+        // Cerrar modal al hacer clic fuera
+        modalGestion.onclick = function(event) {
+            if (event.target === modalGestion) {
+                cerrarModalGestion();
+            }
+        }
     }
 
     function generarGrillaNumeros(rifa) {
@@ -129,9 +145,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             html += `
                 <div class="${clase}">
-                    <div class="numero-valor">${numero}</div>
-                    <div class="numero-nombre">${vendidoA}</div>
-                    ${vendidoA ? `<button onclick="liberarNumero(${rifa.id}, ${i})" class="btn-danger">Liberar</button>` : ''}
+                    <div class="numero-valor">#${numero}</div>
+                    <div class="numero-nombre">${vendidoA || 'Disponible'}</div>
+                    ${vendidoA ? `
+                        <button onclick="liberarNumero(${rifa.id}, ${i})" 
+                                class="btn-danger" 
+                                style="width: 100%; margin-top: 5px;">
+                            Liberar
+                        </button>
+                    ` : ''}
                 </div>
             `;
         }

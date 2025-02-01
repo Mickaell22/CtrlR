@@ -1,76 +1,94 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const ticketsContainer = document.getElementById('ticketsContainer');
-    const nameInput = document.getElementById('nameInput');
-    const tickets = new Array(50).fill('');
+    // Obtener el ID de la rifa de la URL
+    const params = new URLSearchParams(window.location.search);
+    const rifaId = parseInt(params.get('id'));
 
-    // Crear los 50 números de la rifa
-    function createTickets() {
-        for (let i = 0; i < 50; i++) {
-            const ticket = document.createElement('div');
-            ticket.className = 'ticket';
-            ticket.innerHTML = `
-                <div class="ticket-number">${(i + 1).toString().padStart(2, '0')}</div>
-                <div class="ticket-name"></div>
-            `;
+    // Referencias a elementos del DOM
+    const tituloRifa = document.getElementById('tituloRifa');
+    const premioRifa = document.getElementById('premioRifa');
+    const fechaRifa = document.getElementById('fechaRifa');
+    const precioRifa = document.getElementById('precioRifa');
+    const numerosGrid = document.getElementById('numerosGrid');
+    const nombreInput = document.getElementById('nombreParticipante');
+
+    // Cargar datos de la rifa
+    cargarDatosRifa();
+
+    function cargarDatosRifa() {
+        // Obtener rifas del localStorage
+        const rifas = JSON.parse(localStorage.getItem('rifas')) || [];
+        const rifa = rifas.find(r => r.id === rifaId);
+
+        if (!rifa) {
+            alert('Rifa no encontrada');
+            window.location.href = '../admin.html';
+            return;
+        }
+
+        // Actualizar la información en la página
+        tituloRifa.textContent = rifa.titulo;
+        premioRifa.textContent = rifa.premio;
+        fechaRifa.textContent = formatearFecha(rifa.fecha);
+        precioRifa.textContent = rifa.precio;
+
+        // Generar grid de números
+        generarNumeros(rifa);
+    }
+
+    function generarNumeros(rifa) {
+        numerosGrid.innerHTML = '';
+        
+        for (let i = 1; i <= rifa.numeros; i++) {
+            const numero = document.createElement('div');
+            numero.className = 'numero' + (rifa.numerosVendidos[i] ? ' ocupado' : '');
             
-            ticket.addEventListener('click', () => selectTicket(ticket, i));
-            ticketsContainer.appendChild(ticket);
+            numero.innerHTML = `
+                <div class="numero-valor">${i.toString().padStart(2, '0')}</div>
+                <div class="numero-nombre">${rifa.numerosVendidos[i] || ''}</div>
+            `;
+
+            if (!rifa.numerosVendidos[i]) {
+                numero.addEventListener('click', () => seleccionarNumero(i));
+            }
+
+            numerosGrid.appendChild(numero);
         }
     }
 
-    // Manejar la selección de un número
-    function selectTicket(ticketElement, index) {
-        const name = nameInput.value.trim();
+    function seleccionarNumero(numero) {
+        const nombre = nombreInput.value.trim();
         
-        // Verificar si el número ya está tomado
-        if (tickets[index] !== '') {
+        if (!nombre) {
+            alert('Por favor, ingrese su nombre primero');
+            nombreInput.focus();
+            return;
+        }
+
+        // Obtener y actualizar datos
+        const rifas = JSON.parse(localStorage.getItem('rifas')) || [];
+        const rifaIndex = rifas.findIndex(r => r.id === rifaId);
+
+        if (rifaIndex === -1) return;
+
+        // Verificar si el número ya está vendido
+        if (rifas[rifaIndex].numerosVendidos[numero]) {
             alert('Este número ya está ocupado');
             return;
         }
 
-        // Verificar si se ingresó un nombre
-        if (name === '') {
-            alert('Por favor, ingrese su nombre antes de seleccionar un número');
-            nameInput.focus();
-            return;
-        }
+        // Guardar la selección
+        rifas[rifaIndex].numerosVendidos[numero] = nombre;
+        localStorage.setItem('rifas', JSON.stringify(rifas));
 
-        // Actualizar el ticket
-        tickets[index] = name;
-        ticketElement.classList.add('taken');
-        ticketElement.querySelector('.ticket-name').textContent = name;
+        // Actualizar la vista
+        cargarDatosRifa();
         
-        // Limpiar el input del nombre
-        nameInput.value = '';
-
-        // Guardar en localStorage
-        saveTickets();
+        // Limpiar el input
+        nombreInput.value = '';
     }
 
-    // Guardar tickets en localStorage
-    function saveTickets() {
-        localStorage.setItem('raffleTickets', JSON.stringify(tickets));
+    function formatearFecha(fecha) {
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(fecha).toLocaleDateString('es-ES', opciones);
     }
-
-    // Cargar tickets desde localStorage
-    function loadTickets() {
-        const savedTickets = localStorage.getItem('raffleTickets');
-        if (savedTickets) {
-            const parsedTickets = JSON.parse(savedTickets);
-            tickets.splice(0, tickets.length, ...parsedTickets);
-            
-            // Actualizar la interfaz
-            const ticketElements = document.querySelectorAll('.ticket');
-            tickets.forEach((name, index) => {
-                if (name) {
-                    ticketElements[index].classList.add('taken');
-                    ticketElements[index].querySelector('.ticket-name').textContent = name;
-                }
-            });
-        }
-    }
-
-    // Inicializar la rifa
-    createTickets();
-    loadTickets();
 });

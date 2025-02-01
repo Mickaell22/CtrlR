@@ -130,3 +130,55 @@ h1 {
         grid-template-columns: 1fr;
     }
 }
+
+/* Estilos para el modal de gestión */
+.modal-content {
+    max-width: 800px; /* Aumentamos el ancho máximo */
+    max-height: 90vh; /* Altura máxima del 90% de la ventana */
+    overflow-y: auto; /* Permite scroll si el contenido es muy largo */
+}
+
+.numeros-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.numero {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+}
+
+.numero.ocupado {
+    background-color: #e9ecef;
+}
+
+.numero-valor {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.numero-nombre {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+    word-break: break-word;
+}
+
+/* Responsive para el grid de números */
+@media (max-width: 768px) {
+    .numeros-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .numeros-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
