@@ -34,9 +34,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Funciones de Gestión de Rifas
     function crearRifa(e) {
         e.preventDefault();
-
+    
+        // Obtener el último ID usado
+        const ultimoId = Math.max(...window.rifasData.map(rifa => rifa.id), 0);
+        
+        // Crear nueva rifa con ID único
         const nuevaRifa = {
-            id: Date.now(),
+            id: ultimoId + 1, // Asegura un ID único incrementando el último ID
             titulo: document.getElementById('titulo').value,
             premio: document.getElementById('premio').value,
             fecha: document.getElementById('fecha').value,
@@ -44,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
             numeros: parseInt(document.getElementById('numeros').value),
             numerosVendidos: {}
         };
-
+    
         window.rifasData.push(nuevaRifa);
         mostrarCodigoActualizado();
         cargarRifas();
