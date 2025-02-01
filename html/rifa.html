@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifa</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="rifa-header">
+            <h1 id="tituloRifa">Cargando...</h1>
+            <div class="rifa-info">
+                <p>Premio: <span id="premioRifa"></span></p>
+                <p>Fecha: <span id="fechaRifa"></span></p>
+                <p class="precio">Precio: $<span id="precioRifa"></span></p>
+            </div>
+        </div>
+
+        <div class="registro-section">
+            <input type="text" id="nombreParticipante" placeholder="Ingrese su nombre" class="input-nombre">
+        </div>
+
+        <div id="numerosGrid" class="numeros-grid">
+            <!-- Los números se generarán dinámicamente -->
+        </div>
+
+        <div class="instrucciones">
+            <h3>Instrucciones:</h3>
+            <ol>
+                <li>Ingrese su nombre en el campo de texto</li>
+                <li>Seleccione un número disponible</li>
+                <li>Los números seleccionados mostrarán el nombre del participante</li>
+            </ol>
+        </div>
+
+        <div class="acciones">
+            <a href="../admin.html" class="btn-secondary">Volver al Panel</a>
+        </div>
+    </div>
+    <script src="../js/rifa.js"></script>
+</body>
+</html>

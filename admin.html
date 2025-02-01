@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Rifas</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Panel de Administración de Rifas</h1>
+            <button id="crearRifa" class="btn-primary">Crear Nueva Rifa</button>
+        </header>
+
+        <main>
+            <div id="listaRifas" class="rifas-grid">
+                <!-- Aquí se mostrarán las rifas dinámicamente -->
+            </div>
+        </main>
+
+        <!-- Modal para crear rifa -->
+        <div id="modalCrearRifa" class="modal">
+            <div class="modal-content">
+                <h2>Nueva Rifa</h2>
+                <form id="formRifa">
+                    <div class="form-group">
+                        <label for="titulo">Título:</label>
+                        <input type="text" id="titulo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="premio">Premio:</label>
+                        <input type="text" id="premio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" id="fecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="precio">Precio por Número:</label>
+                        <input type="number" id="precio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numeros">Cantidad de Números:</label>
+                        <input type="number" id="numeros" value="50" required>
+                    </div>
+                    <div class="buttons">
+                        <button type="submit" class="btn-primary">Crear</button>
+                        <button type="button" class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+</html>
