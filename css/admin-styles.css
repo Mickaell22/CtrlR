@@ -1,3 +1,4 @@
+/* Estilos Base */
 * {
     margin: 0;
     padding: 0;
@@ -16,6 +17,7 @@ body {
     padding: 20px;
 }
 
+/* Header y Títulos */
 header {
     display: flex;
     justify-content: space-between;
@@ -27,6 +29,7 @@ h1 {
     color: #2c3e50;
 }
 
+/* Botones */
 .btn-primary {
     background-color: #3498db;
     color: white;
@@ -54,6 +57,23 @@ h1 {
     cursor: pointer;
 }
 
+.btn-liberar {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-top: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+    width: 100%;
+}
+
+.btn-liberar:hover {
+    background: #c0392b;
+}
+
+/* Grid de Rifas */
 .rifas-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -81,26 +101,31 @@ h1 {
     gap: 10px;
 }
 
-/* Modal */
+/* Modal Base */
 .modal {
     display: none;
     position: fixed;
-    top: 0;
+    z-index: 1000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
     background-color: white;
+    margin: 5vh auto;
     padding: 30px;
-    border-radius: 8px;
+    border-radius: 12px;
     width: 90%;
-    max-width: 500px;
-    margin: 50px auto;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
 }
 
+/* Formularios */
 .form-group {
     margin-bottom: 15px;
 }
@@ -125,53 +150,82 @@ h1 {
     margin-top: 20px;
 }
 
-@media (max-width: 768px) {
-    .rifas-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Estilos para el modal de gestión */
-.modal-content {
-    max-width: 800px; /* Aumentamos el ancho máximo */
-    max-height: 90vh; /* Altura máxima del 90% de la ventana */
-    overflow-y: auto; /* Permite scroll si el contenido es muy largo */
-}
-
+/* Grid de Números */
 .numeros-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 20px;
 }
 
 .numero {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
     padding: 10px;
     text-align: center;
+    transition: all 0.3s ease;
+}
+
+.numero:not(.ocupado) {
+    cursor: pointer;
+}
+
+.numero:not(.ocupado):hover {
+    background: #f7fafc;
+    border-color: #3498db;
 }
 
 .numero.ocupado {
-    background-color: #e9ecef;
+    background: #f8f9fa;
+    border-color: #2ecc71;
 }
 
 .numero-valor {
+    font-size: 1.2em;
     font-weight: bold;
-    font-size: 1.1em;
+    color: #2d3748;
     margin-bottom: 5px;
 }
 
 .numero-nombre {
     font-size: 0.9em;
-    margin-bottom: 5px;
+    color: #718096;
     word-break: break-word;
 }
 
-/* Responsive para el grid de números */
+/* Secciones de Gestión */
+.input-section {
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.input-nombre {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #3498db;
+    border-radius: 6px;
+    font-size: 1em;
+}
+
+.info-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f1f5f9;
+    border-radius: 8px;
+}
+
+/* Media Queries */
 @media (max-width: 768px) {
+    .rifas-grid {
+        grid-template-columns: 1fr;
+    }
+    
     .numeros-grid {
         grid-template-columns: repeat(4, 1fr);
     }
@@ -181,54 +235,9 @@ h1 {
     .numeros-grid {
         grid-template-columns: repeat(3, 1fr);
     }
-}
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: 20px;
-}
-
-/* Asegurar que el botón de crear sea visible */
-#crearRifa {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+    
+    .info-section {
+        flex-direction: column;
+        gap: 10px;
+    }
 }

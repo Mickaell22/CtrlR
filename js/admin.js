@@ -16,11 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Cargar rifas existentes al iniciar
+    // Inicializar y cargar rifas
+    window.rifasData = window.rifasData || [];
     cargarRifas();
-    console.log('Cargando rifas existentes...');
+    console.log('Rifas cargadas:', window.rifasData);
 
-    // Funciones principales
+    // Funciones del Modal Principal
     function abrirModal() {
         modal.style.display = 'block';
     }
@@ -30,12 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
         formRifa.reset();
     }
 
-    window.cerrarModal = cerrarModal;
-
+    // Funciones de Gestión de Rifas
     function crearRifa(e) {
         e.preventDefault();
 
-        // Crear nueva rifa
         const nuevaRifa = {
             id: Date.now(),
             titulo: document.getElementById('titulo').value,
@@ -46,13 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
             numerosVendidos: {}
         };
 
-        // Añadir la nueva rifa al array de rifas
         window.rifasData.push(nuevaRifa);
-        
-        // Mostrar el código actualizado
         mostrarCodigoActualizado();
-        
-        // Actualizar la vista
         cargarRifas();
         cerrarModal();
     }
@@ -60,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function cargarRifas() {
         listaRifas.innerHTML = '';
 
-        if (!window.rifasData || window.rifasData.length === 0) {
+        if (window.rifasData.length === 0) {
             listaRifas.innerHTML = '<p class="no-rifas">No hay rifas creadas. ¡Crea una nueva!</p>';
             return;
         }
@@ -89,46 +83,47 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    window.verRifa = function(rifaId) {
-        window.location.href = `html/rifa.html?id=${rifaId}`;
-    }
-
+    // Funciones para la Gestión de Números
     window.gestionarNumeros = function(rifaId) {
         const rifa = window.rifasData.find(r => r.id === rifaId);
         if (!rifa) return;
 
-        // Remover modal existente si hay
         const modalExistente = document.getElementById('modalGestion');
-        if (modalExistente) {
-            modalExistente.remove();
-        }
+        if (modalExistente) modalExistente.remove();
 
-        // Crear nuevo modal
+        const numerosVendidos = Object.keys(rifa.numerosVendidos || {}).length;
+        const porcentajeVendido = ((numerosVendidos / rifa.numeros) * 100).toFixed(1);
+
         const modalHTML = `
             <div id="modalGestion" class="modal">
                 <div class="modal-content">
-                    <h2>Gestionar Números - ${rifa.titulo}</h2>
+                    <h2 style="margin-bottom: 20px;">Gestionar Números - ${rifa.titulo}</h2>
+                    
+                    <div class="info-section">
+                        <div>
+                            <strong>Números vendidos:</strong> ${numerosVendidos} de ${rifa.numeros} (${porcentajeVendido}%)
+                        </div>
+                        <div>
+                            <strong>Precio por número:</strong> $${rifa.precio}
+                        </div>
+                    </div>
+
+                    <div class="input-section">
+                        <input type="text" 
+                               id="nombreComprador" 
+                               placeholder="Nombre del comprador" 
+                               class="input-nombre"
+                               autocomplete="off">
+                        <small style="color: #666; display: block; margin-top: 5px;">
+                            Ingresa un nombre y haz clic en un número disponible para asignarlo
+                        </small>
+                    </div>
+
                     <div class="numeros-grid">
                         ${generarGrillaNumeros(rifa)}
                     </div>
-                    <div class="instrucciones">
-                        <p class="texto-ayuda">Para actualizar los números:</p>
-                        <ol>
-                            <li>Ingresa el nombre en el campo de texto</li>
-                            <li>Haz clic en el número que deseas asignar</li>
-                            <li>Copia el código generado abajo</li>
-                            <li>Actualiza el archivo data.js con el nuevo código</li>
-                        </ol>
-                    </div>
-                    <div class="input-section">
-                        <input type="text" id="nombreComprador" placeholder="Nombre del comprador" class="input-nombre">
-                    </div>
-                    <div class="codigo-actualizado">
-                        <h3>Código para data.js:</h3>
-                        <pre><code>${generarCodigoActualizado()}</code></pre>
-                        <button onclick="copiarCodigo()" class="btn-primary">Copiar Código</button>
-                    </div>
-                    <div class="buttons">
+
+                    <div class="buttons" style="text-align: right; margin-top: 20px;">
                         <button onclick="cerrarModalGestion()" class="btn-secondary">Cerrar</button>
                     </div>
                 </div>
@@ -137,8 +132,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.body.insertAdjacentHTML('beforeend', modalHTML);
         
-        // Añadir event listeners para números
-        const numerosElements = document.querySelectorAll('.numero:not(.ocupado)');
+        const modal = document.getElementById('modalGestion');
+        const numerosElements = modal.querySelectorAll('.numero:not(.ocupado)');
+        
         numerosElements.forEach(numeroElement => {
             numeroElement.addEventListener('click', function() {
                 const numero = parseInt(this.dataset.numero);
@@ -146,6 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (!nombre) {
                     alert('Por favor, ingresa el nombre del comprador');
+                    document.getElementById('nombreComprador').focus();
                     return;
                 }
 
@@ -153,42 +150,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        document.getElementById('modalGestion').style.display = 'block';
-    }
+        modal.style.display = 'block';
+        document.getElementById('nombreComprador').focus();
 
-    function asignarNumero(rifaId, numero, nombre) {
-        const rifaIndex = window.rifasData.findIndex(r => r.id === rifaId);
-        if (rifaIndex === -1) return;
-
-        window.rifasData[rifaIndex].numerosVendidos[numero] = nombre;
-        mostrarCodigoActualizado();
-        gestionarNumeros(rifaId);
-    }
-
-    window.eliminarRifa = function(rifaId) {
-        if (!confirm('¿Estás seguro de que quieres eliminar esta rifa?')) return;
-
-        window.rifasData = window.rifasData.filter(rifa => rifa.id !== rifaId);
-        mostrarCodigoActualizado();
-        cargarRifas();
-    }
-
-    window.cerrarModalGestion = function() {
-        const modalGestion = document.getElementById('modalGestion');
-        if (modalGestion) {
-            modalGestion.remove();
-        }
-    }
-
-    window.liberarNumero = function(rifaId, numero) {
-        if (!confirm('¿Estás seguro de que quieres liberar este número?')) return;
-        
-        const rifaIndex = window.rifasData.findIndex(r => r.id === rifaId);
-        if (rifaIndex === -1) return;
-
-        delete window.rifasData[rifaIndex].numerosVendidos[numero];
-        mostrarCodigoActualizado();
-        gestionarNumeros(rifaId);
+        modal.onclick = function(event) {
+            if (event.target === modal) cerrarModalGestion();
+        };
     }
 
     function generarGrillaNumeros(rifa) {
@@ -203,7 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="numero-valor">#${numero}</div>
                     <div class="numero-nombre">${vendidoA || 'Disponible'}</div>
                     ${vendidoA ? `
-                        <button onclick="liberarNumero(${rifa.id}, ${i})" class="btn-danger">Liberar</button>
+                        <button onclick="liberarNumero(${rifa.id}, ${i})" class="btn-liberar">
+                            Liberar
+                        </button>
                     ` : ''}
                 </div>
             `;
@@ -211,6 +180,44 @@ document.addEventListener('DOMContentLoaded', function() {
         return html;
     }
 
+    // Funciones de Navegación y Utilidades
+    window.verRifa = function(rifaId) {
+        window.location.href = `html/rifa.html?id=${rifaId}`;
+    }
+
+    window.eliminarRifa = function(rifaId) {
+        if (!confirm('¿Estás seguro de que quieres eliminar esta rifa?')) return;
+        window.rifasData = window.rifasData.filter(rifa => rifa.id !== rifaId);
+        mostrarCodigoActualizado();
+        cargarRifas();
+    }
+
+    window.cerrarModalGestion = function() {
+        const modalGestion = document.getElementById('modalGestion');
+        if (modalGestion) modalGestion.remove();
+    }
+
+    window.liberarNumero = function(rifaId, numero) {
+        if (!confirm('¿Estás seguro de que quieres liberar este número?')) return;
+        
+        const rifaIndex = window.rifasData.findIndex(r => r.id === rifaId);
+        if (rifaIndex === -1) return;
+
+        delete window.rifasData[rifaIndex].numerosVendidos[numero];
+        mostrarCodigoActualizado();
+        gestionarNumeros(rifaId);
+    }
+
+    function asignarNumero(rifaId, numero, nombre) {
+        const rifaIndex = window.rifasData.findIndex(r => r.id === rifaId);
+        if (rifaIndex === -1) return;
+
+        window.rifasData[rifaIndex].numerosVendidos[numero] = nombre;
+        mostrarCodigoActualizado();
+        gestionarNumeros(rifaId);
+    }
+
+    // Funciones para el Código Actualizado
     function mostrarCodigoActualizado() {
         const codigo = `window.rifasData = ${JSON.stringify(window.rifasData, null, 2)};`;
         
@@ -242,40 +249,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return new Date(fecha).toLocaleDateString('es-ES', opciones);
     }
 
-    // Estilos para el contenedor de código
-    const style = document.createElement('style');
-    style.textContent = `
-        .codigo-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-width: 500px;
-            max-height: 400px;
-            overflow: auto;
-            z-index: 1000;
-        }
-        .codigo-container pre {
-            background: #f5f5f5;
-            padding: 10px;
-            border-radius: 4px;
-            overflow-x: auto;
-            margin: 10px 0;
-        }
-        .text-ayuda {
-            color: #666;
-            margin-bottom: 10px;
-        }
-        .input-nombre {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-    `;
-    document.head.appendChild(style);
+    // Hacer globales las funciones necesarias
+    window.cerrarModal = cerrarModal;
 });
