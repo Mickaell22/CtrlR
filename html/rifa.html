@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rifa</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
-
 <body>
     <div class="container">
         <div class="rifa-header">
@@ -19,7 +17,8 @@
             </div>
         </div>
 
-        <div class="registro-section">
+        <!-- Solo mostrar si es admin -->
+        <div id="adminSection" style="display: none;" class="registro-section">
             <input type="text" id="nombreParticipante" placeholder="Ingrese su nombre" class="input-nombre">
         </div>
 
@@ -30,15 +29,23 @@
         <div class="instrucciones">
             <h3>Instrucciones:</h3>
             <ol>
-                <li>Ingrese su nombre en el campo de texto</li>
-                <li>Seleccione un número disponible</li>
-                <li>Los números seleccionados mostrarán el nombre del participante</li>
+                <li>Revisa los números disponibles (los que no tienen nombre)</li>
+                <li>Anota el número que te interesa</li>
+                <li>Contacta al organizador para apartar tu número</li>
             </ol>
         </div>
-
-        <a href="../admin.html" class="btn-secondary">Volver al Panel</a>
     </div>
-    <script src="../js/rifa.js"></script>
-</body>
 
+    <!-- Importante: Cargar data.js antes que rifa.js -->
+    <script>
+        // Verificar si los archivos se están cargando
+        console.log('Iniciando carga de scripts...');
+    </script>
+    <script src="../js/data.js"></script>
+    <script src="../js/rifa.js"></script>
+    <script>
+        // Verificar si rifaData está disponible
+        console.log('rifaData:', window.rifaData);
+    </script>
+</body>
 </html>

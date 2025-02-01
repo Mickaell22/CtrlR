@@ -33,25 +33,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function crearRifa(e) {
         e.preventDefault();
-
+    
         const rifa = {
-            id: Date.now(), // Identificador único
+            id: Date.now(), // Esto asegura un ID único basado en timestamp
             titulo: document.getElementById('titulo').value,
             premio: document.getElementById('premio').value,
             fecha: document.getElementById('fecha').value,
             precio: document.getElementById('precio').value,
             numeros: parseInt(document.getElementById('numeros').value),
-            numerosVendidos: {} // Objeto para almacenar números vendidos: {numero: "nombre"}
+            numerosVendidos: {}
         };
-
-        // Obtener rifas existentes
+    
         let rifas = JSON.parse(localStorage.getItem('rifas')) || [];
         rifas.push(rifa);
         
-        // Guardar en localStorage
         localStorage.setItem('rifas', JSON.stringify(rifas));
-
-        // Actualizar la vista
+        console.log('Nueva rifa creada con ID:', rifa.id);
+    
         cargarRifas();
         cerrarModal();
     }
@@ -91,6 +89,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Funciones de gestión
     window.verRifa = function(rifaId) {
+        // Obtener la rifa específica
+        const rifas = JSON.parse(localStorage.getItem('rifas')) || [];
+        const rifa = rifas.find(r => r.id === rifaId);
+        
+        if (!rifa) {
+            alert('Rifa no encontrada');
+            return;
+        }
+        
+        // Guardar la rifa actual en localStorage para uso individual
+        localStorage.setItem('rifaActual', JSON.stringify(rifa));
         window.location.href = `html/rifa.html?id=${rifaId}`;
     }
 

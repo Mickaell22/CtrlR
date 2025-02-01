@@ -1,9 +1,16 @@
-const rifaData = {
-    id: 1,
-    titulo: "Gran Rifa",
-    premio: "MITHYKA L'BEL 50ml",
-    fecha: "2024-02-15",
-    precio: "1",
-    numeros: 50,
-    numerosVendidos: {}
-};
+// Asegurarnos que rifaData sea global
+window.rifaData = {
+    "id": 1738428258754,
+    "titulo": "Gran Rifa de perfume",
+    "premio": "Perfume",
+    "fecha": "2025-02-28",
+    "precio": "2",
+    "numeros": 50,
+    "numerosVendidos": {
+      "1": "Mickaell",
+      "2": "Monica",
+      "3": "Michi"
+    }
+  };
+
+console.log('data.js cargado:', window.rifaData);
