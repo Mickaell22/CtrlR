@@ -84,7 +84,7 @@ h1 {
     background-color: white;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .rifa-card h3 {
@@ -225,7 +225,7 @@ h1 {
     .rifas-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .numeros-grid {
         grid-template-columns: repeat(4, 1fr);
     }
@@ -235,9 +235,58 @@ h1 {
     .numeros-grid {
         grid-template-columns: repeat(3, 1fr);
     }
-    
+
     .info-section {
         flex-direction: column;
         gap: 10px;
     }
+}
+
+.rifa-card {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.rifa-images {
+    flex-shrink: 0;
+    width: 200px;
+}
+
+.rifa-image {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.rifa-content {
+    flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+    .rifa-card {
+        flex-direction: column;
+    }
+    
+    .rifa-images {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+    }
+    
+    .rifa-image {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 0;
+    }
+}
+.image-preview {
+    display: none;
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: cover;
+    margin-top: 10px;
+    border-radius: 4px;
 }
