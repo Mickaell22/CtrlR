@@ -34,30 +34,39 @@ document.addEventListener("DOMContentLoaded", function () {
   // Funciones de Gestión de Rifas
   function crearRifa(e) {
     e.preventDefault();
+    const rifaId = Date.now();
 
     const imagen1 = document.getElementById("imagen1").files[0];
     const imagen2 = document.getElementById("imagen2").files[0];
 
-    // Generar nombres únicos para las imágenes
-    const timestamp = Date.now();
-    const imagen1Name = `rifa_${timestamp}_1.png`;
-    const imagen2Name = `rifa_${timestamp}_2.png`;
+    const imagen1Name = `rifa_${rifaId}_1.${imagen1.name.split(".").pop()}`;
+    const imagen2Name = `rifa_${rifaId}_2.${imagen2.name.split(".").pop()}`;
+
+    // Crear enlaces de descarga
+    const link1 = document.createElement("a");
+    const link2 = document.createElement("a");
+
+    link1.download = imagen1Name;
+    link2.download = imagen2Name;
+
+    link1.href = URL.createObjectURL(imagen1);
+    link2.href = URL.createObjectURL(imagen2);
+
+    // Descargar archivos
+    link1.click();
+    link2.click();
 
     const nuevaRifa = {
-      id: timestamp,
+      id: rifaId,
       titulo: document.getElementById("titulo").value,
       premio: document.getElementById("premio").value,
       fecha: document.getElementById("fecha").value,
       precio: document.getElementById("precio").value,
-      imagen1: imagen1Name,
-      imagen2: imagen2Name,
+      imagen1: `img/rifas/${imagen1Name}`,
+      imagen2: `img/rifas/${imagen2Name}`,
       numeros: parseInt(document.getElementById("numeros").value),
       numerosVendidos: {},
     };
-
-    // Guardar imágenes
-    guardarImagen(imagen1, imagen1Name);
-    guardarImagen(imagen2, imagen2Name);
 
     window.rifasData.push(nuevaRifa);
     mostrarCodigoActualizado();
@@ -65,26 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
     cerrarModal();
   }
 
-  function guardarImagen(file, filename) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      // Guarda la imagen en la carpeta del proyecto
-      const img = new Image();
-      img.src = e.target.result;
-
-      // Crear un enlace para descargar la imagen
-      const link = document.createElement("a");
-      link.download = filename;
-      link.href = e.target.result;
-
-      // Guardar en la carpeta img/rifas/
-      const path = `img/rifas/${filename}`;
-      link.click();
-
-      // También guardar en localStorage como respaldo
-      localStorage.setItem(filename, e.target.result);
-    };
-    reader.readAsDataURL(file);
+  function guardarImagen(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(file);
+    });
   }
 
   document.getElementById("imagen1").addEventListener("change", function (e) {
@@ -126,13 +121,9 @@ document.addEventListener("DOMContentLoaded", function () {
       rifaCard.className = "rifa-card";
       rifaCard.innerHTML = `
             <div class="rifa-images">
-                <img src="${
-                  localStorage.getItem(rifa.imagen1) || "img/default.png"
-                }" class="rifa-image" alt="Imagen 1">
-                <img src="${
-                  localStorage.getItem(rifa.imagen2) || "img/default.png"
-                }" class="rifa-image" alt="Imagen 2">
-            </div>
+            <img src="${rifa.imagen1}" class="rifa-image" alt="Imagen 1">
+            <img src="${rifa.imagen2}" class="rifa-image" alt="Imagen 2">
+        </div>
             <div class="rifa-content">
                 <h3>${rifa.titulo}</h3>
                 <div class="rifa-info">
