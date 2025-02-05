@@ -13,13 +13,13 @@ window.rifasData = [
     }
   },
   {
-    "id": 1738703432165,
+    "id": 1738720982050,
     "titulo": "Gran Rifa de perfume",
     "premio": "Perfume",
-    "fecha": "2025-02-04",
+    "fecha": "2025-02-28",
     "precio": "1",
-    "imagen1": "img/rifas/rifa_1738703432165_1.jpg",
-    "imagen2": "img/rifas/rifa_1738703432165_2.png",
+    "imagen1": "img/rifas/rifa_1738720982050_1.jpg",
+    "imagen2": "img/rifas/rifa_1738720982050_2.jpg",
     "numeros": 50,
     "numerosVendidos": {}
   }
