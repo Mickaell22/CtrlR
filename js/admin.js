@@ -120,10 +120,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const rifaCard = document.createElement("div");
       rifaCard.className = "rifa-card";
       rifaCard.innerHTML = `
+      
             <div class="rifa-images">
-            <img src="${rifa.imagen1}" class="rifa-image" alt="Imagen 1">
-            <img src="${rifa.imagen2}" class="rifa-image" alt="Imagen 2">
-        </div>
+        <img src="${rifa.imagen1}" class="rifa-image" alt="Imagen 1">
+        <img src="${rifa.imagen2}" class="rifa-image" alt="Imagen 2">
+        ${rifa.youtubeLink ? `<a href="${rifa.youtubeLink}" target="_blank" class="youtube-link">Ver video</a>` : ''}
+    </div>
             <div class="rifa-content">
                 <h3>${rifa.titulo}</h3>
                 <div class="rifa-info">

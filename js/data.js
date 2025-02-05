@@ -2,7 +2,8 @@ window.rifasData = [
   {
     "id": 1738722088912,
     "titulo": "Gran Rifa de Zapatos",
-    "premio": "Zapatos : https://youtu.be/Mzxr1PntEws",
+    "premio": "Zapatos",
+    "youtubeLink": "https://youtu.be/Mzxr1PntEws",
     "fecha": "2025-02-28",
     "precio": "1",
     "imagen1": "img/rifas/rifa_1738722088912_1.png",
@@ -11,3 +12,4 @@ window.rifasData = [
     "numerosVendidos": {}
   }
 ];
+

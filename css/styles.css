@@ -196,3 +196,20 @@ body {
     object-fit: cover;
     border-radius: 8px;
 }
+
+.youtube-link {
+    display: block;
+    background: #ff0000;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-top: 10px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.youtube-link:hover {
+    background: #cc0000;
+}

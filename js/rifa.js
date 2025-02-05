@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
   imagenesDiv.innerHTML = `
     <img src="../${rifaActual.imagen1}" class="rifa-image" alt="Imagen 1">
     <img src="../${rifaActual.imagen2}" class="rifa-image" alt="Imagen 2">
+    ${rifaActual.youtubeLink ? `<a href="${rifaActual.youtubeLink}" target="_blank" class="youtube-link">Ver Video del Premio</a>` : ''}
+
 `;
   headerRifa.insertBefore(imagenesDiv, headerRifa.firstChild);
 
