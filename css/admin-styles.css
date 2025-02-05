@@ -81,10 +81,14 @@ h1 {
 }
 
 .rifa-card {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+    align-items: start;
     background-color: white;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .rifa-card h3 {
@@ -246,19 +250,20 @@ h1 {
     display: flex;
     gap: 20px;
     align-items: flex-start;
+    width: fit-content;
 }
 
 .rifa-images {
-    flex-shrink: 0;
-    width: 200px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
 }
 
 .rifa-image {
     width: 100%;
-    height: 100px;
+    aspect-ratio: 1;
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 10px;
 }
 
 .rifa-content {
@@ -267,14 +272,13 @@ h1 {
 
 @media (max-width: 768px) {
     .rifa-card {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
     
     .rifa-images {
-        width: 100%;
-        display: flex;
-        gap: 10px;
+        grid-template-columns: repeat(2, 1fr);
     }
+
     
     .rifa-image {
         width: 150px;
