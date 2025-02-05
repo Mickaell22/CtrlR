@@ -185,7 +185,7 @@ body {
 }
 
 .rifa-images {
-    display: flex;
+    text-align: center;
     gap: 20px;
     margin-bottom: 20px;
 }
