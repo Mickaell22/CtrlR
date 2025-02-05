@@ -12,7 +12,7 @@ window.rifasData = [
     "numerosVendidos": {
       "15": "Stalin",
       "16": "Stalin",
-      "22": "Stalin"
+      "18": "Stalin"
     }
   }
 ];
