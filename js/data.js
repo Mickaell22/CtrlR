@@ -11,7 +11,7 @@ window.rifasData = [
     "numeros": 50,
     "numerosVendidos": {
       "4": "Emily",
-      "7": "Amba",
+      "7": "Ambar",
       "8": "Emily",
       "10": "Eduardo",
       "14": "Eduardo",
