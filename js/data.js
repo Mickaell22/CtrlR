@@ -10,9 +10,13 @@ window.rifasData = [
     "imagen2": "img/rifas/rifa_1738722088912_2.jpg",
     "numeros": 50,
     "numerosVendidos": {
+      "10": "Eduardo",
+      "14": "Eduardo",
       "15": "Stalin",
       "16": "Stalin",
-      "18": "Stalin"
+      "17": "Ambar",
+      "18": "Stalin",
+      "20": "Eduardo"
     }
   }
 ];
