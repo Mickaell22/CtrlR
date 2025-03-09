@@ -19,6 +19,7 @@ window.rifasData = [
       "8": "Emily Moran",
       "10": "Eduardo Vera",
       "11": "Christian",
+      "12": "Eduardo Chavez",
       "13": "Edita Sanchez",
       "14": "Eduardo Vera",
       "15": "Stalin Vera",
