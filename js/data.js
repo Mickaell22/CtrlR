@@ -4,7 +4,7 @@ window.rifasData = [
     "titulo": "Gran Rifa de Zapatos",
     "premio": "Zapatos",
     "youtubeLink": "https://youtu.be/Mzxr1PntEws",
-    "fecha": "2025-02-28",
+    "fecha": "2025-03-28",
     "precio": "1",
     "imagen1": "img/rifas/rifa_1738722088912_1.png",
     "imagen2": "img/rifas/rifa_1738722088912_2.jpg",
