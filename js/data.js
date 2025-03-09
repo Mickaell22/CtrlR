@@ -12,19 +12,21 @@ window.rifasData = [
     "numerosVendidos": {
       "1": "Gabriela",
       "2": "Angel",
-      "4": "Emily",
+      "4": "Emily Moran",
       "5": "Christian",
       "6": "Angel",
-      "7": "Ambar",
-      "8": "Emily",
-      "10": "Eduardo",
-      "13": "Edita",
-      "14": "Eduardo",
-      "15": "Stalin",
-      "16": "Stalin",
-      "17": "Ambar",
-      "18": "Stalin",
-      "20": "Eduardo"
+      "7": "Ambar Mora",
+      "8": "Emily Moran",
+      "10": "Eduardo Vera",
+      "11": "Christian",
+      "13": "Edita Sanchez",
+      "14": "Eduardo Vera",
+      "15": "Stalin Vera",
+      "16": "Stalin Vera",
+      "17": "Ambar Mora",
+      "18": "Stalin Vera",
+      "20": "Eduardo Vera",
+      "22": "Denisse Cedeño"
     }
   }
 ];
