@@ -12,11 +12,13 @@ window.rifasData = [
     "numerosVendidos": {
       "1": "Gabriela",
       "2": "Angel",
+      "3": "Monica",
       "4": "Emily Moran",
       "5": "Christian",
       "6": "Angel",
       "7": "Ambar Mora",
       "8": "Emily Moran",
+      "9": "Monica",
       "10": "Eduardo Vera",
       "11": "Christian",
       "12": "Eduardo Chavez",
@@ -26,10 +28,13 @@ window.rifasData = [
       "16": "Stalin Vera",
       "17": "Ambar Mora",
       "18": "Stalin Vera",
+      "19": "Monica",
       "20": "Eduardo Vera",
       "21": "Jefferson",
       "22": "Denisse Cedeño",
-      "24": "Denisse Cedeño"
+      "23": "Monica",
+      "24": "Denisse Cedeño",
+      "25": "Monica"
     }
   }
 ];
