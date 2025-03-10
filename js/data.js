@@ -35,8 +35,10 @@ window.rifasData = [
       "23": "Monica",
       "24": "Denisse Cedeño",
       "25": "Monica",
+      "27": "Karina",
       "30": "Yadira Moran",
       "36": "Yadira Moran",
+      "49": "Karina",
       "50": "Yadira Moran"
     }
   }
