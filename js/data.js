@@ -41,6 +41,8 @@ window.rifasData = [
       "29": "Monica",
       "30": "Yadira Moran",
       "36": "Yadira Moran",
+      "37": "Aitana Cevallos",
+      "44": "Damaris Cevallos",
       "49": "Karina",
       "50": "Yadira Moran"
     }
