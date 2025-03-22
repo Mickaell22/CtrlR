@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $mensaje = 'Contraseña incorrecta';
             }
         } else {
-                            $mensaje = 'Usuario no encontrado';
+            $mensaje = 'Usuario no encontrado';
         }
     }
 }
@@ -40,30 +40,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Sistema de Rifas</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/auth-styles.css">
+    <!-- Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Iniciar Sesión</h1>
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <!-- Puedes reemplazar esto con tu propio logo -->
+                <img src="img/logo.png" alt="Logo Sistema de Rifas" onerror="this.src='img/logo-placeholder.png'; this.onerror=null;">
+            </div>
+            <h1>Bienvenido de nuevo</h1>
+            <p>Ingresa tus credenciales para acceder a tu cuenta</p>
+        </div>
         
         <?php if (!empty($mensaje)): ?>
-            <div class="mensaje"><?php echo $mensaje; ?></div>
+            <div class="mensaje mensaje-error">
+                <i class="fas fa-exclamation-circle"></i> <?php echo $mensaje; ?>
+            </div>
         <?php endif; ?>
         
         <form method="POST" action="">
             <div class="form-group">
                 <label for="email">Correo electrónico</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+                <i class="fas fa-envelope"></i>
             </div>
             
             <div class="form-group">
                 <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                <i class="fas fa-lock"></i>
             </div>
             
-            <button type="submit" class="btn">Iniciar Sesión</button>
+            <button type="submit" class="btn-auth">Iniciar Sesión</button>
         </form>
         
-        <p>¿No tienes una cuenta? <a href="register.php">Regístrate</a></p>
+        <div class="alt-link">
+            ¿No tienes una cuenta? <a href="register.php">Regístrate aquí</a>
+        </div>
+        
+        <div class="auth-separator">
+            <span>O</span>
+        </div>
+        
+        <div class="alt-link">
+            <a href="index.php">Volver a la página principal</a>
+        </div>
     </div>
 </body>
 </html>

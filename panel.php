@@ -18,12 +18,14 @@ $rifas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Sistema de Rifas</title>
     <link rel="stylesheet" href="css/admin-styles.css">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -46,7 +48,7 @@ $rifas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         $stmt = $conn->prepare("SELECT COUNT(*) FROM boletos WHERE rifa_id = ? AND estado != 'disponible'");
                         $stmt->execute([$rifa['id']]);
                         $boletos_vendidos = $stmt->fetchColumn();
-                        
+
                         // Calcular el porcentaje vendido
                         $porcentaje_vendido = ($boletos_vendidos / $rifa['numeros']) * 100;
                         ?>
@@ -63,14 +65,19 @@ $rifas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <h3><?php echo htmlspecialchars($rifa['titulo']); ?></h3>
                                 <div class="rifa-info">
                                     <p><strong>Premio:</strong> <?php echo htmlspecialchars($rifa['premio']); ?></p>
-                                    <p><strong>Fecha:</strong> <?php echo date("d/m/Y", strtotime($rifa['fecha_sorteo'])); ?></p>
+                                    <p><strong>Fecha:</strong> <?php echo date("d/m/Y", strtotime($rifa['fecha_sorteo'])); ?>
+                                    </p>
                                     <p><strong>Precio:</strong> $<?php echo htmlspecialchars($rifa['precio_boleto']); ?></p>
-                                    <p><strong>Números vendidos:</strong> <?php echo $boletos_vendidos; ?> de <?php echo $rifa['numeros']; ?> (<?php echo number_format($porcentaje_vendido, 1); ?>%)</p>
+                                    <p><strong>Números vendidos:</strong> <?php echo $boletos_vendidos; ?> de
+                                        <?php echo $rifa['numeros']; ?> (<?php echo number_format($porcentaje_vendido, 1); ?>%)
+                                    </p>
                                 </div>
                                 <div class="rifa-acciones">
                                     <a href="ver_rifa.php?id=<?php echo $rifa['id']; ?>" class="btn-primary">Ver Rifa</a>
-                                    <a href="gestionar_numeros.php?id=<?php echo $rifa['id']; ?>" class="btn-secondary">Gestionar Números</a>
-                                    <a href="eliminar_rifa.php?id=<?php echo $rifa['id']; ?>" class="btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar esta rifa?');">Eliminar</a>
+                                    <a href="gestionar_numeros.php?id=<?php echo $rifa['id']; ?>"
+                                        class="btn-secondary">Gestionar Números</a>
+                                    <a href="eliminar_rifa.php?id=<?php echo $rifa['id']; ?>" class="btn-danger"
+                                        onclick="return confirm('¿Estás seguro de que quieres eliminar esta rifa?');">Eliminar</a>
                                 </div>
                             </div>
                         </div>
@@ -93,12 +100,12 @@ $rifas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <input type="text" id="premio" name="premio" required>
                     </div>
                     <div class="form-group">
-                        <label for="fecha">Fecha del Sorteo:</label>
-                        <input type="date" id="fecha" name="fecha_sorteo" required>
+                        <label for="fecha_sorteo">Fecha del Sorteo:</label>
+                        <input type="date" id="fecha_sorteo" name="fecha_sorteo" required>
                     </div>
                     <div class="form-group">
-                        <label for="precio">Precio del Boleto:</label>
-                        <input type="number" id="precio" name="precio_boleto" step="0.01" required>
+                        <label for="precio_boleto">Precio del Boleto:</label>
+                        <input type="number" id="precio_boleto" name="precio_boleto" step="0.01" required>
                     </div>
                     <div class="form-group">
                         <label for="numeros">Cantidad de números:</label>
@@ -109,14 +116,24 @@ $rifas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <textarea id="descripcion" name="descripcion" rows="4"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="imagen1">Imagen Principal:</label>
+                        <label for="imagen1"><strong>Imagen Principal:</strong> (Obligatoria)</label>
                         <input type="file" id="imagen1" name="imagen1" accept="image/*" required>
                         <img id="preview1" class="image-preview">
                     </div>
                     <div class="form-group">
-                        <label for="imagen2">Imagen Secundaria:</label>
-                        <input type="file" id="imagen2" name="imagen2" accept="image/*">
+                        <label for="imagen2"><strong>Segunda Imagen:</strong> (Obligatoria)</label>
+                        <input type="file" id="imagen2" name="imagen2" accept="image/*" required>
                         <img id="preview2" class="image-preview">
+                    </div>
+                    <div class="form-group">
+                        <label for="imagen3">Tercera Imagen: (Opcional)</label>
+                        <input type="file" id="imagen3" name="imagen3" accept="image/*">
+                        <img id="preview3" class="image-preview">
+                    </div>
+                    <div class="form-group">
+                        <label for="imagen4">Cuarta Imagen: (Opcional)</label>
+                        <input type="file" id="imagen4" name="imagen4" accept="image/*">
+                        <img id="preview4" class="image-preview">
                     </div>
                     <div class="form-group">
                         <label for="youtube_link">Enlace de YouTube (opcional):</label>
@@ -129,48 +146,68 @@ $rifas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </form>
             </div>
         </div>
-    </div>
 
-    <script>
-        // JavaScript para manejar el modal
-        document.getElementById('crearRifa').addEventListener('click', function() {
-            document.getElementById('modalCrearRifa').style.display = 'block';
-        });
+        <script>
+            // JavaScript para manejar el modal
+            document.addEventListener('DOMContentLoaded', function () {
+                // Referencias a elementos
+                const btnCrearRifa = document.getElementById('crearRifa');
+                const modal = document.getElementById('modalCrearRifa');
 
-        function cerrarModal() {
-            document.getElementById('modalCrearRifa').style.display = 'none';
-            document.getElementById('formRifa').reset();
-            document.getElementById('preview1').style.display = 'none';
-            document.getElementById('preview2').style.display = 'none';
-        }
+                // Event Listeners
+                btnCrearRifa.addEventListener('click', function () {
+                    modal.style.display = 'block';
+                });
 
-        // Cerrar modal al hacer clic fuera
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('modalCrearRifa')) {
-                cerrarModal();
-            }
-        };
+                // Función para cerrar modal
+                window.cerrarModal = function () {
+                    modal.style.display = 'none';
+                    document.getElementById('formRifa').reset();
 
-        // Previsualización de imágenes
-        document.getElementById('imagen1').addEventListener('change', function(e) {
-            previewImage(e.target, 'preview1');
-        });
-
-        document.getElementById('imagen2').addEventListener('change', function(e) {
-            previewImage(e.target, 'preview2');
-        });
-
-        function previewImage(input, previewId) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById(previewId);
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
+                    // Limpiar previsualizaciones
+                    document.querySelectorAll('.image-preview').forEach(img => {
+                        img.style.display = 'none';
+                        img.src = '';
+                    });
                 };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
+
+                // Cerrar modal al hacer clic fuera
+                window.addEventListener('click', function (event) {
+                    if (event.target == modal) {
+                        cerrarModal();
+                    }
+                });
+
+                // Previsualización de imágenes
+                document.getElementById('imagen1').addEventListener('change', function (e) {
+                    previewImage(e.target, 'preview1');
+                });
+
+                document.getElementById('imagen2').addEventListener('change', function (e) {
+                    previewImage(e.target, 'preview2');
+                });
+
+                document.getElementById('imagen3').addEventListener('change', function (e) {
+                    previewImage(e.target, 'preview3');
+                });
+
+                document.getElementById('imagen4').addEventListener('change', function (e) {
+                    previewImage(e.target, 'preview4');
+                });
+
+                function previewImage(input, previewId) {
+                    if (input.files && input.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            const preview = document.getElementById(previewId);
+                            preview.src = e.target.result;
+                            preview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+            });
+        </script>
 </body>
+
 </html>

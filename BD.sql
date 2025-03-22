@@ -28,6 +28,9 @@ CREATE TABLE IF NOT EXISTS rifas (
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
+ALTER TABLE rifas 
+ADD COLUMN imagen3 VARCHAR(255) AFTER imagen2,
+ADD COLUMN imagen4 VARCHAR(255) AFTER imagen3;
 
 -- Tabla de boletos
 CREATE TABLE IF NOT EXISTS boletos (

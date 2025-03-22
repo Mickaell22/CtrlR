@@ -27,6 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Generar un ID único para la rifa
     $rifa_id = time();
     
+    // Crear directorio si no existe
+    if (!is_dir('img/rifas')) {
+        mkdir('img/rifas', 0777, true);
+    }
+    
     // Procesar imagen 1 (obligatoria)
     $imagen1_path = '';
     if (isset($_FILES['imagen1']) && $_FILES['imagen1']['error'] === UPLOAD_ERR_OK) {
@@ -34,11 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $extension = pathinfo($imagen1_name, PATHINFO_EXTENSION);
         $imagen1_new_name = "rifa_{$rifa_id}_1.{$extension}";
         $imagen1_path = "img/rifas/{$imagen1_new_name}";
-        
-        // Crear directorio si no existe
-        if (!is_dir('img/rifas')) {
-            mkdir('img/rifas', 0777, true);
-        }
         
         // Mover la imagen al directorio
         if (!move_uploaded_file($_FILES['imagen1']['tmp_name'], $imagen1_path)) {
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die('La imagen principal es obligatoria');
     }
     
-    // Procesar imagen 2 (opcional)
+    // Procesar imagen 2 (obligatoria)
     $imagen2_path = '';
     if (isset($_FILES['imagen2']) && $_FILES['imagen2']['error'] === UPLOAD_ERR_OK) {
         $imagen2_name = $_FILES['imagen2']['name'];
@@ -58,15 +58,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Mover la imagen al directorio
         if (!move_uploaded_file($_FILES['imagen2']['tmp_name'], $imagen2_path)) {
-            die('Error al subir la imagen secundaria');
+            die('Error al subir la segunda imagen');
+        }
+    } else {
+        die('La segunda imagen es obligatoria');
+    }
+    
+    // Procesar imagen 3 (opcional)
+    $imagen3_path = '';
+    if (isset($_FILES['imagen3']) && $_FILES['imagen3']['error'] === UPLOAD_ERR_OK) {
+        $imagen3_name = $_FILES['imagen3']['name'];
+        $extension = pathinfo($imagen3_name, PATHINFO_EXTENSION);
+        $imagen3_new_name = "rifa_{$rifa_id}_3.{$extension}";
+        $imagen3_path = "img/rifas/{$imagen3_new_name}";
+        
+        // Mover la imagen al directorio
+        if (!move_uploaded_file($_FILES['imagen3']['tmp_name'], $imagen3_path)) {
+            die('Error al subir la tercera imagen');
+        }
+    }
+    
+    // Procesar imagen 4 (opcional)
+    $imagen4_path = '';
+    if (isset($_FILES['imagen4']) && $_FILES['imagen4']['error'] === UPLOAD_ERR_OK) {
+        $imagen4_name = $_FILES['imagen4']['name'];
+        $extension = pathinfo($imagen4_name, PATHINFO_EXTENSION);
+        $imagen4_new_name = "rifa_{$rifa_id}_4.{$extension}";
+        $imagen4_path = "img/rifas/{$imagen4_new_name}";
+        
+        // Mover la imagen al directorio
+        if (!move_uploaded_file($_FILES['imagen4']['tmp_name'], $imagen4_path)) {
+            die('Error al subir la cuarta imagen');
         }
     }
     
     try {
         // Insertar la rifa en la base de datos
         $stmt = $conn->prepare("
-            INSERT INTO rifas (usuario_id, titulo, descripcion, premio, fecha_sorteo, precio_boleto, numeros, imagen1, imagen2, youtube_link) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO rifas (usuario_id, titulo, descripcion, premio, fecha_sorteo, precio_boleto, numeros, imagen1, imagen2, imagen3, imagen4, youtube_link) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
         
         $stmt->execute([
@@ -79,6 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $numeros,
             $imagen1_path,
             $imagen2_path,
+            $imagen3_path,
+            $imagen4_path,
             $youtube_link
         ]);
         
