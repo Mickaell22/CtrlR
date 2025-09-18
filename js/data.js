@@ -45,6 +45,10 @@ window.rifasData = [
       "44": "Damaris Cevallos",
       "49": "Karina",
       "50": "Yadira Moran"
+    },
+    "ganador": {
+      "numero": 4,
+      "nombre": "Emily Moran"
     }
   }
 ];

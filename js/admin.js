@@ -143,6 +143,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     <button onclick="gestionarNumeros(${
                       rifa.id
                     })" class="btn-secondary">Gestionar Números</button>
+                    <button onclick="asignarGanadorManual(${
+                      rifa.id
+                    })" class="btn-warning">Asignar Ganador Manual</button>
+                    <button onclick="sobre(${
+                      rifa.id
+                    })" class="btn-info">Sobre</button>
+                    <button onclick="videoSorteo(${
+                      rifa.id
+                    })" class="btn-video">Video del Sorteo del Ganador</button>
                     <button onclick="eliminarRifa(${
                       rifa.id
                     })" class="btn-danger">Eliminar</button>
@@ -337,6 +346,118 @@ document.addEventListener("DOMContentLoaded", function () {
     const opciones = { year: "numeric", month: "long", day: "numeric" };
     return new Date(fecha).toLocaleDateString("es-ES", opciones);
   }
+
+  // Funciones para las nuevas características
+  window.asignarGanadorManual = function (rifaId) {
+    const rifa = window.rifasData.find((r) => r.id === rifaId);
+    if (!rifa) return;
+
+    const numerosVendidos = Object.keys(rifa.numerosVendidos || {});
+    if (numerosVendidos.length === 0) {
+      alert("No hay números vendidos en esta rifa para asignar un ganador.");
+      return;
+    }
+
+    const modalExistente = document.getElementById("modalGanador");
+    if (modalExistente) modalExistente.remove();
+
+    const modalHTML = `
+      <div id="modalGanador" class="modal">
+        <div class="modal-content">
+          <h2>Asignar Ganador Manual - ${rifa.titulo}</h2>
+          <div class="info-section">
+            <p><strong>Selecciona el número ganador:</strong></p>
+          </div>
+          <div class="numeros-ganador">
+            ${numerosVendidos.map(numero => `
+              <div class="numero-ganador" onclick="confirmarGanador(${rifaId}, ${numero})">
+                <div class="numero-valor">#${numero.padStart(2, '0')}</div>
+                <div class="numero-nombre">${rifa.numerosVendidos[numero]}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="buttons" style="text-align: right; margin-top: 20px;">
+            <button onclick="cerrarModalGanador()" class="btn-secondary">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+    document.getElementById("modalGanador").style.display = "block";
+  };
+
+  window.confirmarGanador = function (rifaId, numero) {
+    const rifa = window.rifasData.find((r) => r.id === rifaId);
+    if (!rifa) return;
+
+    const ganador = rifa.numerosVendidos[numero];
+    if (confirm(`¿Confirmas que el ganador es ${ganador} con el número ${numero}?`)) {
+      const rifaIndex = window.rifasData.findIndex((r) => r.id === rifaId);
+      window.rifasData[rifaIndex].ganador = {
+        numero: numero,
+        nombre: ganador
+      };
+      mostrarCodigoActualizado();
+      alert(`¡Ganador asignado! ${ganador} con el número ${numero}`);
+      cerrarModalGanador();
+      cargarRifas();
+    }
+  };
+
+  window.sobre = function (rifaId) {
+    const rifa = window.rifasData.find((r) => r.id === rifaId);
+    if (!rifa) return;
+
+    const modalExistente = document.getElementById("modalSobre");
+    if (modalExistente) modalExistente.remove();
+
+    const modalHTML = `
+      <div id="modalSobre" class="modal">
+        <div class="modal-content">
+          <h2>Información sobre - ${rifa.titulo}</h2>
+          <div class="info-section">
+            <p><strong>Premio:</strong> ${rifa.premio}</p>
+            <p><strong>Fecha:</strong> ${formatearFecha(rifa.fecha)}</p>
+            <p><strong>Precio por número:</strong> $${rifa.precio}</p>
+            <p><strong>Total de números:</strong> ${rifa.numeros}</p>
+            <p><strong>Números vendidos:</strong> ${Object.keys(rifa.numerosVendidos || {}).length}</p>
+            ${rifa.ganador ? `<p><strong>Ganador:</strong> ${rifa.ganador.nombre} - Número ${rifa.ganador.numero}</p>` : '<p><strong>Estado:</strong> Sin ganador asignado</p>'}
+          </div>
+          <div class="buttons" style="text-align: right; margin-top: 20px;">
+            <button onclick="cerrarModalSobre()" class="btn-secondary">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+    document.getElementById("modalSobre").style.display = "block";
+  };
+
+  window.videoSorteo = function (rifaId) {
+    const rifa = window.rifasData.find((r) => r.id === rifaId);
+    if (!rifa) return;
+
+    const videoUrl = prompt("Ingresa la URL del video del sorteo del ganador:");
+    if (videoUrl && videoUrl.trim()) {
+      const rifaIndex = window.rifasData.findIndex((r) => r.id === rifaId);
+      window.rifasData[rifaIndex].videoSorteoUrl = videoUrl.trim();
+      mostrarCodigoActualizado();
+      alert("URL del video del sorteo guardada correctamente");
+      cargarRifas();
+    }
+  };
+
+  window.cerrarModalGanador = function () {
+    const modal = document.getElementById("modalGanador");
+    if (modal) modal.remove();
+  };
+
+  window.cerrarModalSobre = function () {
+    const modal = document.getElementById("modalSobre");
+    if (modal) modal.remove();
+  };
 
   // Hacer globales las funciones necesarias
   window.cerrarModal = cerrarModal;
